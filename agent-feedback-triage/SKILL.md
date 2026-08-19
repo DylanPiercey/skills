@@ -1,6 +1,6 @@
 ---
 name: agent-feedback-triage
-description: Use when asked to triage or work the agent-feedback backlog, pick the next agent-feedback item, or when the user says "next" after a merge. Works agent-feedback/items/ one item per PR: reproduce, propose, fix with a guard, delete the item, review locally, ship.
+description: Use when asked to triage or work the agent-feedback backlog, pick the next agent-feedback item, or when the user says "next" after a merge. Works agent-feedback/items/ one item per PR (reproduce, propose, fix with a guard, delete the item, review locally, ship).
 ---
 
 # agent-feedback-triage
