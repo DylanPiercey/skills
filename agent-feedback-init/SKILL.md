@@ -1,6 +1,7 @@
 ---
 name: agent-feedback-init
 description: Use when a repo should start capturing agent feedback ("set up agent-feedback", "add an agent feedback backlog", "where should agents file out-of-scope findings"). Installs agent-feedback/README.md and the AGENTS.md pointer.
+disable-model-invocation: true
 ---
 
 # agent-feedback-init
