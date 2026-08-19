@@ -9,6 +9,16 @@ Items are written by other agents. Many are wrong, stale, or against project goa
 
 Before starting read `agent-feedback/README.md`, especially `## Repo notes` (repro commands, test conventions, pre-ship checks). Follow the workspace's branch conventions if any (CLAUDE.md/AGENTS.md at the workspace root); the git steps below assume none.
 
+## Gates (do not skip)
+
+The loop has hard stops. Do not start the next item, sync for a new item, or open a second proposal while one of these is pending:
+
+- After **propose**: stop until the user says `go` (or a redirect: "won't fix", "just a comment", …).
+- After **local review**: stop until the user says `ship` or `skip`.
+  - `ship` — push and open the PR, then stop again until `merged` / `next`.
+  - `skip` — drop the local commit (`git reset --hard origin/<base>`), then you may pick another item.
+- Session redirects that only apply to *future* picks (e.g. "focus on non-perf") wait until after `ship` or `skip` of the current item. Do not abandon a pending review to act on them.
+
 ## The loop
 
 1. **Sync.** `git fetch && git reset --hard origin/<base>`. Each PR is one commit on the latest base.
@@ -26,8 +36,8 @@ Before starting read `agent-feedback/README.md`, especially `## Repo notes` (rep
 5. **Implement.** Guard with a test that is red without the fix and green with it. Prove red by reverting only the fix files, running, restoring. Fold tests into existing suites; no new one-off files.
 6. **Prove green.** Re-run the check, the touched suites, then the repo's full pre-ship checks from Repo notes. Report any cost delta before committing.
 7. **Delete the item file in the same commit.** Delete any item that duplicates it too. Fix stale references in sibling items. Never file new items or delete unrelated ones during triage; report side findings and unrelated duplicates in chat.
-8. **Local review and stop.** Single commit. Show `git show --stat HEAD`, the key hunks, and any cost delta. Wait for "ship". Confirm no stray files.
-9. **Ship.** `git push -f -u origin HEAD`, then a PR with a brief what/why body. No verification logs, no file-by-file detail. Link the PR and stop; the user merges.
+8. **Local review and stop.** Single commit. Show `git show --stat HEAD`, the key hunks, and any cost delta. Confirm no stray files. Wait for `ship` or `skip` — do not pick, propose, or implement another item until then.
+9. **Ship.** On `ship`: `git push -f -u origin HEAD`, then a PR with a brief what/why body. No verification logs, no file-by-file detail. Link the PR and stop; the user merges. On `skip`: `git reset --hard origin/<base>` and return to step 2.
 10. On "merged" / "next": step 1.
 
 ## Resolutions
