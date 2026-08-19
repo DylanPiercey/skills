@@ -7,6 +7,8 @@ description: Use when a repo should start capturing agent feedback ("set up agen
 
 Install the agent-feedback convention: `agent-feedback/README.md` (rules, format, repo notes) and `agent-feedback/items/` (one file per finding). Companion skill: `agent-feedback-triage` works the backlog.
 
+This skill is run once per repo, so it does not need to be installed anywhere. `agent-feedback-triage` does: it is used on every item.
+
 ## Steps
 
 1. Copy `README.template.md` from this skill to `agent-feedback/README.md`.
@@ -19,6 +21,13 @@ Install the agent-feedback convention: `agent-feedback/README.md` (rules, format
    Anything actionable but out of scope for the current task (suspected bug, cleanup, perf or size win, tooling friction, confusing code) must be filed in [`agent-feedback/`](agent-feedback/README.md) before finishing. Never drop it silently. Never fix it inside an unrelated diff.
    ```
 4. Commit. Report the paths.
+5. Tell the user to install the triage skill in this repo so an agent can reach for it when working the backlog:
+
+   ```sh
+   npx skills add DylanPiercey/skills -s agent-feedback-triage
+   ```
+
+   Suggest `-g` instead if they triage backlogs in several repos.
 
 ## Prose rules for the files you write
 
